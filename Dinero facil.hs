@@ -14,14 +14,15 @@ data Persona = UnaPersona {nombre::String, listaAhorro::[(Int,String)], nivelDeS
 --1)Para entrar en calor
 --a)Obtener el tipo de cambio de una moneda
 
-tipoCambio tipo = fst $ head $ filter ((== tipo).snd) cotizaciones
+tipoCambio tipo = ahorrosEn tipo cotizaciones
 
 --b)Convertir un cierto importe, de una moneda a otra
---convertirA tipoAConvertir (cant,tipo) = (cant * (tipoCambio tipo))/(tipoCambio tipoAConvertir)
+convertirA tipoAConvertir (cant,tipo) = ((cant*(tipoCambio tipo))/(tipoCambio tipoAConvertir))
 
  --c)Obtener la cantidad de dinero que tiene una persona en una moneda dada
-ahorrrosEn tipo lista = fst $ head $ filter ((== tipo).snd) lista
-cantidadDe tipo persona = ahorrrosEn tipo (listaAhorro persona)
+ahorrosEn tipo listaDeTuplas = fst $ head $ filter ((== tipo).snd) listaDeTuplas
+cantidadDe tipo persona = ahorrosEn tipo (listaAhorro persona)
 
 --d) Calcular el total de ahorro de una persona, expresado en pesos.
-totalAhorro persona = sum( map (\x->ahorrrosEn)) 
+tiposMonedasDiferentes persona = map snd (listaAhorro persona)
+totalAhorro persona = sum (map (convertirA "peso") (listaAhorro persona))
